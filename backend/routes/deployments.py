@@ -7,7 +7,12 @@ from datetime import datetime
 # qual router vou usar para criar as rotas de deployments?
 router = APIRouter()
 #lista de deployments para armazenar os dados em memória
-deployments: list[Deployment] = []
+deployments: list[Deployment] = [
+    Deployment(id="1", name="my-app-v1",   status="running",  created_at="2026-04-14"),
+    Deployment(id="2", name="api-service",  status="stopped",  created_at="2026-04-14"),
+    Deployment(id="3", name="frontend-v2",  status="error",    created_at="2026-04-14"),
+]
+
 
 # Rota 1: Tentando listar todos os deployments
 @router.get("/deployments", response_model=list[Deployment])
@@ -32,4 +37,4 @@ def update_status(deployment_id: str, status: Literal["running", "stopped", "err
         if dep.id == deployment_id:
             dep.status = status
             return dep
-    raise HTTPException(status_code=404, detail="Deployment not found")
+    raise HTTPException(status_code=404, detail="Deployment não encontrado")
